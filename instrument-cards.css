@@ -29,3 +29,56 @@
 @media(max-width:720px){.student{min-height:126px}.student-card-body{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);min-height:80px}.instrument-art{height:49px}.points-value{font-size:clamp(28px,8vw,40px)}.instrument-picker{grid-template-columns:1fr}.dialog-instrument-preview{min-height:62px}}
 @media(max-width:460px){.student{min-height:150px}.student-card-body{min-height:98px}.instrument-art{height:61px}.instrument-label{font-size:10px;line-height:11px}.points-label{font-size:9px}.points-value{font-size:42px}.profile-identity{align-items:flex-start;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){.awarded .points-value{animation:none}}
+
+/* Teacher roster and reward management. */
+.back-control{margin-bottom:14px}
+.settings-management{max-width:1100px}
+.settings-feature{position:relative;padding:20px 20px 18px;border-top:4px solid #d71920}
+.settings-feature .primary,.settings-control{margin-top:14px}
+.settings-icon{float:right;display:grid;place-items:center;width:45px;height:45px;border-radius:12px;background:#fff3cf;color:#0b3457;font-size:25px;font-weight:900}
+.setup-buttons{margin-top:12px!important}
+.bulk-card{margin-top:14px!important}
+.bulk-card textarea{min-height:165px}
+.bulk-card .primary{margin-top:9px}
+.bulk-card hr{border:0;border-top:1px solid #e5e8ef;margin:17px 0}
+.roster-toolbar .search{margin-left:auto}
+.archive-action{color:#8b282d}
+.archived-card{margin-top:16px;padding:14px 16px;border:1px solid #d8dee8;border-radius:11px;background:#f8f9fb}
+.archived-card summary{cursor:pointer;font-weight:850;color:#39495d}
+.archived-list{display:grid;gap:7px;margin-top:12px}
+.archived-list>div{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 10px;border:1px solid #e1e5eb;border-radius:8px;background:#fff}
+.archived-list span{display:flex;flex-direction:column;min-width:0}
+.archived-list small{color:#657089;margin-top:2px}
+.balance-readonly{display:grid;gap:3px;margin-top:16px;padding:12px;border:1px solid #dbe2eb;border-radius:9px;background:#f5f7fa}
+.balance-readonly span,.balance-readonly small{color:#657089}
+.field-error{min-height:17px;margin:4px 0 0!important;color:#a6161c!important;font-size:12px;font-weight:750}
+.preview-list .ready{display:flex;justify-content:space-between;gap:12px}
+.preview-list .ready span{color:#657089}
+.reward-icon{display:block;font-size:31px}
+.reward-manager{display:grid;gap:10px;max-width:1050px}
+.reward-manage-card{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;padding:13px 15px;border:1px solid #dfe4ec;border-radius:12px;background:#fff;box-shadow:0 2px 8px #1722480a}
+.reward-manage-card.is-hidden{background:#f5f6f8;color:#586273}
+.reward-manage-icon{display:grid;place-items:center;width:58px;height:58px;border-radius:12px;background:#fff3cf;color:#102f50;font-size:30px}
+.reward-manage-copy h3,.reward-manage-copy p{margin:0}
+.reward-manage-copy p{margin:4px 0;color:#657089;font-size:13px}
+.status-line{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.status{border-radius:999px;padding:3px 8px;font-size:11px;font-weight:850;text-transform:uppercase;letter-spacing:.04em}
+.status.available{background:#e4f6ec;color:#086a38}
+.status.hidden{background:#e4e7ec;color:#586273}
+.reward-manage-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.reward-manage-actions button{min-height:38px;border:1px solid #d7dde6;border-radius:8px;background:#fff;padding:6px 10px;font-weight:750}
+.reward-editor-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(190px,.65fr);gap:18px;align-items:start}
+.reward-editor-layout textarea{resize:vertical}
+.reward-editor-layout aside{position:sticky;top:0}
+.preview-reward{width:100%;min-height:195px;margin-top:8px}
+.icon-choices{margin:14px 0 10px;border:1px solid #dbe0ea;border-radius:10px;padding:10px}
+.icon-choices legend{font-size:13px;font-weight:800}
+.icon-choices label{display:inline-block;margin:3px}
+.icon-choices input{position:absolute;opacity:0;pointer-events:none}
+.icon-choices span{display:grid;place-items:center;width:42px;height:42px;border:2px solid transparent;border-radius:8px;background:#f2f4f7;font-size:22px;cursor:pointer}
+.icon-choices input:checked+span{border-color:#d71920;background:#fff4f4}
+.icon-choices input:focus-visible+span{outline:3px solid #294a7e;outline-offset:2px}
+.availability-check{display:flex;align-items:flex-start;gap:9px;margin-top:12px;font-weight:750}
+.availability-check input{width:20px;height:20px}
+
+@media(max-width:720px){.reward-manage-card{grid-template-columns:54px minmax(0,1fr)}.reward-manage-actions{grid-column:1/-1;justify-content:flex-start}.reward-editor-layout{grid-template-columns:1fr}.reward-editor-layout aside{position:static}.roster-toolbar .search{margin-left:0}.settings-feature{padding:17px}}

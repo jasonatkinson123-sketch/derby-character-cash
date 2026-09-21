@@ -17,12 +17,13 @@ const nav=(page,name)=>page.locator(`[data-view="${name}"]`).click();
 (async()=>{
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
   const base=`http://127.0.0.1:${server.address().port}`;
-  const browser=await chromium.launch({headless:true}),errors=[],failed=[];
+  const browser=await chromium.launch({headless:true,...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH?{executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH}:{})}),errors=[],failed=[];
   const page=await browser.newPage({viewport:{width:1366,height:768},deviceScaleFactor:1});
   page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
   page.on('pageerror',e=>errors.push(e.message));
   page.on('requestfailed',r=>failed.push(`${r.url()} ${r.failure()?.errorText}`));
   page.on('response',r=>{if(r.status()>=400)failed.push(`${r.url()} ${r.status()}`)});
+  page.on('dialog',dialog=>dialog.accept());
   await page.goto(base,{waitUntil:'networkidle'});
 
   assert(await page.locator('.student').count()===24,'Default classroom did not load 24 fictional students');
@@ -80,9 +81,11 @@ const nav=(page,name)=>page.locator(`[data-view="${name}"]`).click();
   await page.screenshot({path:path.join(proof,'instrument-cards-1366.png'),fullPage:true});
 
   await nav(page,'setup');await page.locator('#newClass').click();await page.locator('#className').fill('Fictional Test Band');await page.locator('#classForm .primary').click();
-  await page.locator('#addStudent').click();await page.locator('#studentName').fill('Test Student');await page.locator('#studentInstrument').selectOption('electric-bass');await page.locator('#studentBalance').fill('1250');await page.locator('#studentForm .primary').click();
+  await page.locator('#addStudent').click();await page.locator('#studentName').fill('Test Student');await page.locator('#studentInstrument').selectOption('electric-bass');await page.locator('#studentForm .primary').click();
   saved=await state(page);let testStudent=saved.students.find(s=>s.name==='Test Student');
-  assert(testStudent?.instrumentId==='electric-bass'&&testStudent.balance===1250,'Adding a student with an instrument failed');
+  assert(testStudent?.instrumentId==='electric-bass'&&testStudent.balance===0,'Adding a student with an instrument or zero default failed');
+  await page.evaluate(id=>{const data=JSON.parse(localStorage.getItem('derby-character-cash-v1'));data.students.find(s=>s.id===id).balance=1250;localStorage.setItem('derby-character-cash-v1',JSON.stringify(data))},testStudent.id);
+  await page.reload({waitUntil:'networkidle'});await nav(page,'setup');saved=await state(page);testStudent=saved.students.find(s=>s.id===testStudent.id);
 
   const downloadPromise=page.waitForEvent('download');await page.locator('#setupBackup').click();const backupDownload=await downloadPromise,backupPath=path.join(proof,'test-backup.json');await backupDownload.saveAs(backupPath);
   const backup=JSON.parse(fs.readFileSync(backupPath,'utf8'));
@@ -95,14 +98,52 @@ const nav=(page,name)=>page.locator(`[data-view="${name}"]`).click();
   await page.evaluate(()=>{const data=JSON.parse(localStorage.getItem('derby-character-cash-v1')),s=data.students[0];delete s.instrumentId;s.instrument='Bass clarinet';localStorage.setItem('derby-character-cash-v1',JSON.stringify(data))});
   await page.reload({waitUntil:'networkidle'});saved=await state(page);assert(saved.students[0].instrumentId==='bass-clarinet','Legacy instrument migration failed');
 
+  await nav(page,'settings');
+  assert(await page.locator('#manageRoster').isVisible()&&await page.locator('#manageRewards').isVisible(),'Settings management sections are missing');
+  await page.screenshot({path:path.join(proof,'settings-management.png'),fullPage:true});
+  await page.locator('#manageRoster').click();
+  assert(await page.locator('#backSettings').isVisible(),'Class Setup opened from Settings has no Back to Settings control');
+  await page.locator('#setupClass').selectOption(saved.students.find(s=>s.id===testStudent.id).classId);
+  let testRow=page.locator('tr').filter({hasText:'Test Student'});
+  await testRow.locator('[data-edit]').click();await page.locator('#studentName').fill("O'Neil-Álvarez");await page.locator('#studentInstrument').selectOption('mallets-bells');await page.locator('#studentForm .primary').click();
+  saved=await state(page);let renamed=saved.students.find(s=>s.id===testStudent.id);assert(renamed.name==="O'Neil-Álvarez"&&renamed.balance===1250&&renamed.instrumentId==='mallets-bells','Editing a student changed identity or balance');
+  await page.locator('#bulkNames').fill("River K.\nRiver K.\n\nO'Neil-Álvarez");await page.locator('#previewBulk').click();
+  assert((await page.locator('.preview-list .ready').count())===1&&(await page.locator('.preview-list .bad').count())===2,'Bulk preview did not flag duplicate and existing names');
+  await page.locator('#confirmImport').click();saved=await state(page);assert(saved.students.filter(s=>s.name==='River K.').length===1,'Bulk import merged or duplicated entries');
+  testRow=page.locator('tr').filter({hasText:"O'Neil-Álvarez"});await testRow.locator('[data-archive-student]').click();saved=await state(page);renamed=saved.students.find(s=>s.id===testStudent.id);assert(renamed.archived&&renamed.balance===1250,'Archiving lost the student balance');
+  await nav(page,'class');assert((await page.locator('.student').filter({hasText:"O'Neil-Álvarez"}).count())===0,'Archived student remained on classroom screen');await nav(page,'rewards');assert((await page.locator('#rewardStudent option').filter({hasText:"O'Neil-Álvarez"}).count())===0,'Archived student remained a reward recipient');await nav(page,'setup');await page.locator('#setupClass').selectOption(renamed.classId);
+  await page.locator('.archived-card summary').click();await page.locator(`[data-restore-student="${testStudent.id}"]`).click();saved=await state(page);assert(!saved.students.find(s=>s.id===testStudent.id).archived,'Archived student did not restore');
+  await nav(page,'settings');await page.locator('#manageRewards').click();
+  const initialRewards=(await state(page)).rewards.length;
+  await page.locator('#addReward').click();await page.locator('#rewardName').fill('Unsaved Draft');await page.locator('[data-close]').click();assert((await state(page)).rewards.length===initialRewards,'Cancel saved a reward draft');
+  const invalidCosts=['','0','-2','1.5'];for(const cost of invalidCosts){await page.locator('#addReward').click();await page.locator('#rewardName').fill('Invalid Cost');await page.locator('#rewardPrice').fill(cost);await page.locator('#rewardForm .primary').click();assert((await page.locator('#rewardPriceError').textContent()).includes('positive whole number'),`Cost ${cost||'blank'} was accepted`);await page.locator('[data-close]').click()}
+  await page.locator('#addReward').click();await page.locator('#rewardName').fill('Nonnumeric Cost');await page.locator('#rewardPrice').evaluate(input=>input.type='text');await page.locator('#rewardPrice').fill('abc');await page.locator('#rewardForm .primary').click();assert((await page.locator('#rewardPriceError').textContent()).includes('positive whole number'),'Nonnumeric cost was accepted');await page.locator('[data-close]').click();
+  await page.locator('#addReward').click();await page.locator('#rewardName').fill('Band Director for a Minute');await page.locator('#rewardDescription').fill('Lead one short classroom routine.');await page.locator('#rewardPrice').fill('11');await page.locator('#rewardForm .primary').click();
+  saved=await state(page);let custom=saved.rewards.find(r=>r.name==='Band Director for a Minute');assert(custom&&custom.id&&custom.price===11&&custom.available,'New reward was not saved correctly');
+  let customCard=page.locator('.reward-manage-card').filter({hasText:'Band Director for a Minute'});await customCard.locator('[data-edit-reward]').click();await page.locator('#rewardName').fill('Cancelled Name');await page.locator('[data-close]').click();assert((await state(page)).rewards.find(r=>r.id===custom.id).name==='Band Director for a Minute','Cancel changed a saved reward');
+  await customCard.locator('[data-edit-reward]').click();await page.locator('#rewardName').fill('Junior Director Pass');await page.locator('#rewardPrice').fill('13');await page.locator('#rewardForm .primary').click();saved=await state(page);custom=saved.rewards.find(r=>r.id===custom.id);assert(custom.name==='Junior Director Pass'&&custom.price===13,'Reward edit failed or changed stable ID');
+  customCard=page.locator('.reward-manage-card').filter({hasText:'Junior Director Pass'});await customCard.locator('[data-toggle-reward]').click();await nav(page,'rewards');assert((await page.locator('[data-reward]').allTextContents()).every(x=>!x.includes('Junior Director Pass')),'Hidden reward remained redeemable');
+  await nav(page,'settings');await page.locator('#manageRewards').click();customCard=page.locator('.reward-manage-card').filter({hasText:'Junior Director Pass'});await customCard.locator('[data-toggle-reward]').click();await customCard.locator('[data-move-reward][data-direction="up"]').click();
+  await page.screenshot({path:path.join(proof,'reward-management.png'),fullPage:true});
+  await nav(page,'rewards');await page.locator(`[data-reward="${custom.id}"]`).click();await page.locator('#rewardStudent').selectOption(testStudent.id);const beforeRedeem=(await state(page)).students.find(s=>s.id===testStudent.id).balance;await page.locator('#redeem').click();saved=await state(page);const redemption=saved.events.find(e=>e.type==='redemption'&&e.rewardId===custom.id);assert(saved.students.find(s=>s.id===testStudent.id).balance===beforeRedeem-13,'Redemption deducted the wrong amount');assert(redemption?.rewardTitle==='Junior Director Pass'&&redemption.pointCost===13&&redemption.studentId===testStudent.id&&redemption.classId,'Redemption snapshot is incomplete');
+  await nav(page,'settings');await page.locator('#manageRewards').click();customCard=page.locator('.reward-manage-card').filter({hasText:'Junior Director Pass'});await customCard.locator('[data-edit-reward]').click();await page.locator('#rewardName').fill('Renamed After Redemption');await page.locator('#rewardPrice').fill('99');await page.locator('#rewardForm .primary').click();saved=await state(page);const historical=saved.events.find(e=>e.id===redemption.id);assert(historical.rewardTitle==='Junior Director Pass'&&historical.pointCost===13,'Editing a reward rewrote redemption history');
+
+  const managementDownload=page.waitForEvent('download');await nav(page,'settings');await page.locator('#exportBackup').click();const managementFile=await managementDownload,managementPath=path.join(proof,'management-backup.json');await managementFile.saveAs(managementPath);const managementBackup=JSON.parse(fs.readFileSync(managementPath,'utf8'));assert(managementBackup.data.rewards.find(r=>r.id===custom.id)?.name==='Renamed After Redemption','Backup omitted customized rewards');assert(managementBackup.data.students.find(s=>s.id===testStudent.id)?.archived===false,'Backup omitted archive state');
+  managementBackup.data.students.find(s=>s.id===testStudent.id).archived=true;managementBackup.data.rewards.find(r=>r.id===custom.id).available=false;const currentRestorePath=path.join(proof,'management-restore.json');fs.writeFileSync(currentRestorePath,JSON.stringify(managementBackup));await page.locator('#restoreBackup').click();await page.locator('#restoreFile').setInputFiles(currentRestorePath);await page.locator('#confirmRestore').click();await page.waitForFunction(()=>document.querySelector('.toast')?.textContent.includes('restored'));saved=await state(page);assert(saved.students.find(s=>s.id===testStudent.id).archived&&saved.rewards.find(r=>r.id===custom.id).available===false,'Current backup restore lost archive or reward visibility');
+
+  await page.evaluate(()=>{const data=JSON.parse(localStorage.getItem('derby-character-cash-v1'));data.rewards.forEach(r=>r.available=false);localStorage.setItem('derby-character-cash-v1',JSON.stringify(data))});await page.reload({waitUntil:'networkidle'});await nav(page,'rewards');assert(await page.getByText('No rewards available',{exact:true}).isVisible()&&!await page.locator('#redeem').isEnabled(),'All-hidden reward state is unsafe or unclear');
+  await page.evaluate(()=>{const data=JSON.parse(localStorage.getItem('derby-character-cash-v1'));for(const r of data.rewards){delete r.id;delete r.order;delete r.available}delete data.students[0].archived;localStorage.setItem('derby-character-cash-v1',JSON.stringify(data))});await page.reload({waitUntil:'networkidle'});saved=await state(page);assert(saved.rewards.every(r=>r.id&&Number.isInteger(r.order)&&r.available===true)&&saved.students[0].archived===false,'Older roster/reward data did not migrate safely');assert(new Set(saved.rewards.map(r=>r.id)).size===saved.rewards.length,'Reward migration created duplicate IDs');
+  const invalidPath=path.join(proof,'invalid-backup.json');fs.writeFileSync(invalidPath,'{"format":"wrong"}');const beforeInvalid=JSON.stringify(await state(page));await nav(page,'settings');await page.locator('#restoreBackup').click();await page.locator('#restoreFile').setInputFiles(invalidPath);await page.waitForFunction(()=>document.querySelector('.toast')?.textContent.includes('Invalid backup'));assert(JSON.stringify(await state(page))===beforeInvalid,'Invalid backup altered current data');
+
   await page.setViewportSize({width:390,height:844});await nav(page,'class');
   const mobile=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth,cards:[...document.querySelectorAll('.student')].map(x=>x.getBoundingClientRect().width)}));
   assert(!mobile.overflow&&mobile.cards.every(w=>w>250),'Narrow layout is unusable');
   await page.screenshot({path:path.join(proof,'instrument-cards-phone.png'),fullPage:true});
+  await nav(page,'settings');assert(!await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth),'Settings has horizontal overflow on phone');await page.locator('#manageRewards').click();assert(!await page.evaluate(()=>document.documentElement.scrollWidth>document.documentElement.clientWidth),'Reward management has horizontal overflow on phone');await page.waitForTimeout(4500);await page.screenshot({path:path.join(proof,'reward-management-phone.png'),fullPage:true});
 
   assert(errors.length===0,'Console errors: '+errors.join(' | '));
   assert(failed.length===0,'Failed requests: '+failed.join(' | '));
-  fs.rmSync(backupPath,{force:true});fs.rmSync(restorePath,{force:true});
+  [backupPath,restorePath,managementPath,currentRestorePath,invalidPath].forEach(file=>fs.rmSync(file,{force:true}));
   await browser.close();server.close();
   console.log(JSON.stringify({ok:true,instruments:16,cards:24,pointTotals:[0,9,25,100,999,1250,-5],consoleErrors:errors.length,failedRequests:failed.length}));
 })().catch(async error=>{console.error(error);server.close();process.exitCode=1});
