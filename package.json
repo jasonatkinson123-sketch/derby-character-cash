@@ -1,0 +1,10 @@
+{
+  "name": "derby-character-cash",
+  "private": true,
+  "scripts": {
+    "test:browser": "node tests/instrument-identity.cjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.51.0"
+  }
+}

@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe47a"/><stop offset=".5" stop-color="#e5a915"/><stop offset="1" stop-color="#9b6200"/></linearGradient>
+    <linearGradient id="silver" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f9fcff"/><stop offset=".48" stop-color="#aebdca"/><stop offset="1" stop-color="#647789"/></linearGradient>
+    <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a34b2b"/><stop offset="1" stop-color="#4f1d18"/></linearGradient>
+  </defs>
+
+  <symbol id="icon-flute" viewBox="0 0 160 100">
+    <g transform="rotate(-12 80 50)" stroke="#24384b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 49h124" stroke="url(#silver)" stroke-width="10"/><path d="M28 43v12M135 43v12"/><ellipse cx="42" cy="49" rx="7" ry="9" fill="#dce7ef"/>
+      <g fill="#f5f8fb" stroke-width="2"><circle cx="62" cy="41" r="5"/><circle cx="79" cy="41" r="5"/><circle cx="96" cy="41" r="5"/><circle cx="113" cy="41" r="5"/></g>
+    </g>
+  </symbol>
+  <symbol id="icon-oboe" viewBox="0 0 160 100">
+    <g transform="rotate(-14 80 50)" stroke="#241d1a" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M81 9l-2 13" stroke="#b8c6d0" stroke-width="4"/><path d="M79 19L67 80h25z" fill="#30231f" stroke-width="4"/>
+      <path d="M67 80q12 10 25 0" fill="#181313" stroke-width="4"/><g fill="#d9e0e6" stroke="#5c6973" stroke-width="2"><circle cx="78" cy="35" r="4"/><circle cx="75" cy="49" r="4"/><circle cx="72" cy="63" r="4"/><circle cx="84" cy="55" r="3"/></g>
+    </g>
+  </symbol>
+  <symbol id="icon-bassoon" viewBox="0 0 160 100">
+    <g stroke="#3e211c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M61 83L75 17h18L80 83z" fill="url(#wood)"/><path d="M92 20q24-18 31 4" fill="none" stroke="#9eafb9"/><path d="M122 24l9-5" stroke="#283743"/><path d="M64 83q8 8 17 0" fill="#2f1715"/>
+      <path d="M71 31l18 4M68 45l18 4M66 59l17 4M64 72l17 4" stroke="#d9e2e8" stroke-width="3"/>
+    </g>
+  </symbol>
+  <symbol id="icon-clarinet" viewBox="0 0 160 100">
+    <g transform="rotate(-13 80 50)" stroke="#1d1c20" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M78 12l7 8-5 7" fill="#17151a"/><path d="M80 24l-5 55" stroke="#29262b" stroke-width="14"/><path d="M68 78h19l9 12H58z" fill="#211e23"/>
+      <g fill="#d8e1e8" stroke="#687887" stroke-width="2"><circle cx="80" cy="35" r="4"/><circle cx="78" cy="47" r="4"/><circle cx="77" cy="59" r="4"/><circle cx="75" cy="70" r="4"/></g>
+    </g>
+  </symbol>
+  <symbol id="icon-bass-clarinet" viewBox="0 0 160 100">
+    <g transform="rotate(-9 80 50)" stroke="#1d1c20" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M78 8l9 9-7 8" fill="#17151a"/><path d="M80 22l-4 58" stroke="#29262b" stroke-width="15"/><path d="M76 78q-1 12 13 12h17" fill="none" stroke="#93a5b1" stroke-width="8"/><path d="M105 82l14 8-15 7z" fill="#30373d"/>
+      <g fill="#d8e1e8" stroke="#687887" stroke-width="2"><circle cx="80" cy="34" r="4"/><circle cx="79" cy="48" r="4"/><circle cx="78" cy="62" r="4"/></g>
+    </g>
+  </symbol>
+  <symbol id="icon-alto-sax" viewBox="0 0 160 100">
+    <g stroke="#3b2a08" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M57 18q32-10 37 9L82 31q-7-7-12-2l-7 33q-4 19 13 23 24 5 31-15" fill="none" stroke="url(#brass)" stroke-width="16"/><path d="M104 58l30 7-25 24z" fill="url(#brass)"/>
+      <path d="M71 43l19 4M68 54l18 5M66 65l17 5" stroke="#fff0a6" stroke-width="3"/><circle cx="86" cy="37" r="4" fill="#fff1a3"/>
+    </g>
+  </symbol>
+  <symbol id="icon-tenor-sax" viewBox="0 0 160 100">
+    <g stroke="#3b2a08" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M43 13q43-9 49 14L79 33q-8-8-14-1L58 65q-5 25 20 29 30 3 39-22" fill="none" stroke="url(#brass)" stroke-width="18"/><path d="M111 57l37 8-31 29z" fill="url(#brass)"/>
+      <path d="M66 45l22 5M63 57l21 5M60 69l20 5" stroke="#fff0a6" stroke-width="3"/>
+    </g>
+  </symbol>
+  <symbol id="icon-baritone-sax" viewBox="0 0 160 100">
+    <g stroke="#3b2a08" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M31 19q11-16 29-6l25 14-13 9-12-8-10 43q-5 24 22 26 35 2 49-26" fill="none" stroke="url(#brass)" stroke-width="20"/><path d="M114 50l42 13-36 33z" fill="url(#brass)"/>
+      <path d="M60 42l24 6M57 55l24 6M54 68l22 6" stroke="#fff0a6" stroke-width="3"/>
+    </g>
+  </symbol>
+  <symbol id="icon-trumpet" viewBox="0 0 160 100">
+    <g stroke="#3b2a08" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 45h82l34-20v50l-34-20H21z" fill="url(#brass)"/><path d="M25 39v22M48 43v30h17V43M70 43v30h17V43" fill="none"/>
+      <path d="M49 35v14M61 32v17M73 35v14" stroke-width="7"/><path d="M12 41h12v18H12z" fill="#d8b35b"/>
+    </g>
+  </symbol>
+  <symbol id="icon-french-horn" viewBox="0 0 160 100">
+    <g fill="none" stroke="#3b2a08" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="72" cy="52" r="34" fill="url(#brass)"/><circle cx="72" cy="52" r="22" fill="#fff8e8"/><path d="M72 30q-21 22 0 44q18-16 0-32q-10 10 1 20" stroke="url(#brass)" stroke-width="9"/>
+      <path d="M98 41l40-22v67L98 63z" fill="url(#brass)"/><path d="M35 28L14 19M14 19l-5 8" stroke="#a36f0c" stroke-width="7"/>
+    </g>
+  </symbol>
+  <symbol id="icon-trombone" viewBox="0 0 160 100">
+    <g stroke="#3b2a08" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 36h91l34-20v40l-34-12H20z" fill="url(#brass)"/><path d="M31 43v28h104V54M45 44v15h75" fill="none" stroke="#d69d16" stroke-width="8"/><path d="M19 31v18H9V31z" fill="#d8b35b"/>
+    </g>
+  </symbol>
+  <symbol id="icon-euphonium" viewBox="0 0 160 100">
+    <g stroke="#3b2a08" stroke-width="4" stroke-linejoin="round">
+      <path d="M67 15h47l-10 22H88l5 49H51l10-49H43L34 15z" fill="url(#brass)"/><path d="M68 38q-23 9-9 32h29M86 37q18 10 6 28" fill="none" stroke="#fff0a6" stroke-width="6"/>
+      <path d="M62 29v20M72 27v22M82 29v20" stroke-width="7"/><path d="M48 86h58" stroke-width="7"/>
+    </g>
+  </symbol>
+  <symbol id="icon-tuba" viewBox="0 0 160 100">
+    <g stroke="#3b2a08" stroke-width="4" stroke-linejoin="round">
+      <path d="M51 6h73l-17 28H87l8 57H39l10-50H26L16 18h38z" fill="url(#brass)"/><path d="M57 40q-25 10-9 37h40M81 36q25 15 5 42M35 43q11 7 5 28" fill="none" stroke="#fff0a6" stroke-width="7"/>
+      <path d="M58 31v22M70 29v24M82 31v22" stroke-width="8"/><path d="M37 91h62" stroke-width="8"/>
+    </g>
+  </symbol>
+  <symbol id="icon-electric-bass" viewBox="0 0 160 100">
+    <g transform="rotate(-8 80 50)" stroke="#172f40" stroke-width="4" stroke-linejoin="round">
+      <path d="M19 51l75-10 43-18 12 16-47 15-77 13z" fill="#d6ad65"/><path d="M22 37q25-15 39 1l-3 11q17 20-4 36-22 16-38-8-11-17 6-40z" fill="#176f75"/>
+      <rect x="35" y="48" width="25" height="13" rx="4" fill="#172f40"/><circle cx="36" cy="71" r="7" fill="#f1d58d"/><path d="M96 42l41-24 14 17-49 19z" fill="#d6ad65"/>
+      <path d="M15 48L145 27M16 53l131-21M17 58l131-20M18 63l131-20" stroke="#f8f1dc" stroke-width="1.8"/>
+      <path d="M139 18l13-4M143 24l14-1M145 32l13 3M140 39l12 6" stroke-width="4"/>
+    </g>
+  </symbol>
+  <symbol id="icon-percussion" viewBox="0 0 160 100">
+    <g stroke="#1b3348" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <ellipse cx="80" cy="42" rx="43" ry="15" fill="#e9f1f5"/><path d="M37 42v36q43 23 86 0V42" fill="#2c79a8"/><ellipse cx="80" cy="78" rx="43" ry="15" fill="#1d5d88"/>
+      <path d="M45 39l70 42M115 39L45 81M55 24l58-19M105 24L47 5" stroke="#9b5b2f" stroke-width="8"/>
+    </g>
+  </symbol>
+  <symbol id="icon-mallets-bells" viewBox="0 0 160 100">
+    <g stroke="#1b3348" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M24 45l112 4-12 43H34z" fill="#445b70"/><g fill="url(#silver)" stroke-width="2"><path d="M31 50l13 1-5 32-13-1z"/><path d="M47 51l13 1-4 32-13-1z"/><path d="M63 52l13 1-3 32-13-1z"/><path d="M79 53l13 1-2 32-13-1z"/><path d="M95 53l13 1-1 33-13-1z"/><path d="M111 54l13 1v33l-13-1z"/></g>
+      <path d="M45 38L112 9M115 39L49 8" stroke="#9b5b2f" stroke-width="7"/><circle cx="115" cy="8" r="8" fill="#f0b934"/><circle cx="46" cy="8" r="8" fill="#f0b934"/>
+    </g>
+  </symbol>
+</svg>
