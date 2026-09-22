@@ -10,7 +10,9 @@ Each classroom card contains three clearly separated pieces of information:
 2. Locally bundled instrument illustration and label
 3. High-contrast point total
 
-The instrument catalog lives in `app.js` and uses stable `instrumentId` values. Finished vector artwork is bundled in `assets/instruments.svg`. Replacing the artwork for a symbol ID does not require changing saved student records.
+The instrument catalog lives in `app.js` and uses stable `instrumentId` values. Sixteen finished 512 × 512 transparent PNG illustrations are bundled in `assets/instruments/`, with the original high-resolution generated masters retained in `artwork-source/instruments/`.
+
+To replace an instrument later, export a square transparent PNG, keep the complete instrument inside a consistent safe area, resize it to 512 × 512, and replace the matching file in `assets/instruments/`. Keep the filename unchanged—for example, replace `assets/instruments/flute.png` to update every flute student. No student records or application logic need to change.
 
 Teachers assign instruments from **Class Setup**. The roster table supports immediate assignment changes, and the Add/Edit Student dialog includes an instrument preview.
 
@@ -45,7 +47,7 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000`.
 
-Do not open `index.html` directly from the filesystem; serve it so the external SVG sprite behaves the same way it does on GitHub Pages.
+Do not open `index.html` directly from the filesystem; serve it so relative artwork paths behave the same way they do on GitHub Pages.
 
 ## Browser tests
 
@@ -55,4 +57,4 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-The test uses fictional data and covers the classroom workflow, all 16 instruments, editable rosters, bulk-name validation, archive/restore, reward validation and editing, redemption snapshots, persistence, current and legacy migration, backup/restore, points and undo, keyboard use, and responsive layouts.
+The test uses fictional data and covers all 16 PNG assets, the safe image fallback, classroom and roster previews, editable rosters, bulk-name validation, archive/restore, reward validation and editing, redemption snapshots, persistence, migration, backup/restore, points and undo, keyboard use, and responsive layouts.

@@ -5,9 +5,12 @@
 .student-card-body{display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:5px;margin-top:6px;min-height:72px}
 .instrument-panel,.points-panel{min-width:0;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
 .instrument-panel{padding:3px 2px 2px;background:#fff8e8;border:1px solid #eadfca;color:#33485d}
-.instrument-art{display:block;width:100%;height:43px;filter:drop-shadow(0 1px 1px #24384b22)}
+.instrument-art{display:block;width:100%;height:43px;object-fit:contain;filter:drop-shadow(0 1px 1px #24384b22)}
+.instrument-art[hidden],.roster-instrument[hidden],.dialog-instrument[hidden],.profile-instrument[hidden]{display:none}
 .instrument-label{display:-webkit-box;max-width:100%;min-height:18px;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:2;font-size:8.5px;font-weight:800;line-height:9px}
-.instrument-empty-mark{display:grid;place-items:center;width:100%;height:43px;color:#8a98a7;font-size:28px;font-weight:800}
+.instrument-empty-mark,.instrument-image-fallback{place-items:center;width:100%;height:43px;color:#8a98a7;font-size:28px;font-weight:800}
+.instrument-empty-mark{display:grid}
+.instrument-image-fallback:not([hidden]){display:grid}
 .points-panel{background:#0b3457;border:2px solid #efb91f;color:#fff;padding:4px 2px;box-shadow:inset 0 1px #ffffff26}
 .points-label{text-transform:uppercase;color:#f6ca4e;font-size:8px;font-weight:900;letter-spacing:.13em;line-height:1}
 .points-value{display:block;max-width:100%;overflow:hidden;text-overflow:clip;font-size:clamp(20px,1.55vw,28px);font-weight:950;letter-spacing:-.07em;line-height:1.05;font-variant-numeric:tabular-nums}
@@ -17,13 +20,13 @@
 
 .instrument-select{min-width:190px;max-width:240px;width:100%;min-height:40px;border:1px solid #dbe0ea;border-radius:8px;background:#fff;padding:6px 9px;font:inherit}
 .setup-instrument-preview{display:flex;align-items:center;gap:8px;min-width:150px;font-size:12px;font-weight:800;color:#435267}
-.roster-instrument{width:62px;height:42px;flex:0 0 62px;padding:2px;border:1px solid #eadfca;border-radius:7px;background:#fff8e8}
+.roster-instrument{width:62px;height:42px;flex:0 0 62px;object-fit:contain;padding:2px;border:1px solid #eadfca;border-radius:7px;background:#fff8e8}
 .roster-table{min-width:890px}
 .instrument-picker{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:10px;align-items:stretch}
 .dialog-instrument-preview{display:flex;align-items:center;gap:8px;padding:5px 8px;border:1px solid #eadfca;border-radius:9px;background:#fff8e8;font-size:12px;font-weight:800;color:#435267}
-.dialog-instrument{width:76px;height:48px;flex:0 0 76px}
+.dialog-instrument{width:76px;height:48px;flex:0 0 76px;object-fit:contain}
 .profile-identity{display:flex;gap:14px;align-items:center}
-.profile-instrument{width:110px;height:78px;flex:0 0 110px;padding:6px;border:1px solid #eadfca;border-radius:11px;background:#fff8e8}
+.profile-instrument{width:110px;height:78px;flex:0 0 110px;object-fit:contain;padding:6px;border:1px solid #eadfca;border-radius:11px;background:#fff8e8}
 
 @media(max-width:1180px){.points-value{font-size:clamp(24px,3vw,35px)}}
 @media(max-width:720px){.student{min-height:126px}.student-card-body{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);min-height:80px}.instrument-art{height:49px}.points-value{font-size:clamp(28px,8vw,40px)}.instrument-picker{grid-template-columns:1fr}.dialog-instrument-preview{min-height:62px}}

@@ -1,11 +1,16 @@
-# Editable Rosters and Rewards Test Report
+# Instrument PNG Library Test Report
 
 ## Automated real-browser coverage
+
+Latest local run: Chromium at 1366 × 768 and 390 × 844. Result: 16 instruments, 24 classroom cards, zero unexpected console errors, zero failed requests, and successful checks for point totals `0`, `9`, `25`, `100`, `999`, `1,250`, and `-5`.
 
 The Playwright test in `tests/instrument-identity.cjs` verifies:
 
 - The default 24-student class renders as instrument and points panels.
-- All 16 stable instrument IDs can be assigned and render as 16 separate SVG symbols.
+- All 16 stable instrument IDs can be assigned and render as 16 separate 512 × 512 transparent PNG files.
+- PNG dimensions and successful browser decoding are checked at runtime.
+- Classroom, roster, dialog, and profile previews share the same centralized artwork paths.
+- A deliberately missing image produces the neutral fallback without breaking the card.
 - Instrument assignments persist after refresh.
 - Changing an instrument preserves the student balance and event history.
 - Keyboard selection, point awarding, and Undo work.
@@ -38,6 +43,8 @@ The retained screenshots in `proof/` were inspected for:
 
 - Name, instrument, and point hierarchy across 24 cards.
 - Instrument contrast against the cream badge area.
+- Full-size artwork, a 4 × 4 contact sheet, and 96px and 64px derivatives.
+- Distinction between clarinet and bass clarinet, the three saxophones, euphonium and tuba, electric bass and acoustic guitar, and percussion and mallets/bells.
 - Four-digit point readability.
 - Selected-state visibility.
 - Roster assignment controls and previews.
@@ -46,7 +53,7 @@ The retained screenshots in `proof/` were inspected for:
 
 ## Known limitations
 
-- At classroom-card size, related instruments rely on both silhouette and their visible text labels. The three saxophones intentionally use different proportions, but labels remain important from a distance.
+- At classroom-card size, related instruments still rely on both silhouette and their visible text labels. The three saxophones intentionally use different proportions, but labels remain important from the front of the room.
 - Previously uploaded avatar data remains preserved for compatibility but has no normal interface for viewing or editing.
 - Data remains local to the current browser and device; regular backup exports are still required.
 - The application intentionally has no permanent-delete flow for students; archiving is the safe roster-removal path.
