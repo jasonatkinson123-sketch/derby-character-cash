@@ -11,7 +11,8 @@ const INSTRUMENTS=[
 const REWARD_ICONS=['★','♫','♟','⚡','☀','✦','◉','▣','✓','♥','⚑','⌁'];
 const DEFAULT_REWARDS=[['choose-seat','Choose Your Seat Pass','Pick your seat for one class.',12,'▣'],['music-request','Music Request Pass','Choose a clean work-time song.',15,'♫'],['sit-with-friend','Sit With a Friend Pass','Choose a classroom partner.',18,'♟'],['classroom-vip','Classroom VIP Pass','Be the teacher helper for a class.',20,'★'],['activity-pass','Activity Pass','Choose a five-minute class activity.',22,'⚡'],['announcement-guest','Morning Announcement Guest','Share a positive message on announcements.',28,'◉'],['teacher-choice','Teacher Choice Pass','A special classroom privilege.',25,'✦'],['class-experience','Class Experience Pass','Help choose a future class experience.',30,'☀']];
 const $=s=>document.querySelector(s),screen=$('#screen'),dialog=$('#dialog'),dialogBody=$('#dialogBody'),avatarInput=$('#avatarFile'),restoreInput=$('#restoreFile'),csvInput=$('#csvFile');
-let view='class',query='',selected=new Set(),flash=new Set(),lastAward=null,detailId=null,rewardId=null,returnToSettings=false,pendingAvatarId=null,avatarUrls=new Set(),awardTimer=null,redeeming=false,state=loadState();
+const requestedView=new URLSearchParams(window.location.search).get('view');
+let view=requestedView==='rewards'?'rewards':'class',query='',selected=new Set(),flash=new Set(),lastAward=null,detailId=null,rewardId=null,returnToSettings=false,pendingAvatarId=null,avatarUrls=new Set(),awardTimer=null,redeeming=false,state=loadState();
 function uid(prefix='id'){return prefix+'-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
 function now(){return new Date().toISOString()}
 function esc(value=''){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
